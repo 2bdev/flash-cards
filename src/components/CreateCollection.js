@@ -14,6 +14,7 @@ class CreateCollection extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.handleSaveClose = this.handleSaveClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 
 	handleClose() {
@@ -40,6 +41,12 @@ class CreateCollection extends Component {
     });
   }
 
+  handleKeyPress(e) {
+    if (e.key === 'Enter') {
+      this.handleSaveClose();
+    }
+  }
+
   render() {
     return (
       <div className="create-collection">
@@ -55,6 +62,7 @@ class CreateCollection extends Component {
               value={this.state.newTitle}
               placeholder="New Collection"
               onChange={this.handleChange}
+              onKeyPress={this.handleKeyPress}
             />
           </Modal.Body>
           <Modal.Footer>
