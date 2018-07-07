@@ -6,14 +6,17 @@ import CreateCollection from './CreateCollection';
 
 const collections = [
   {
+		"id": 1,
     "title": "State Capitals",
     "cardCount": 50
   },
   {
+		"id": 2,
     "title": "World Capitals",
     "cardCount": 190
   },
   {
+		"id": 3,
     "title": "US Presidents",
     "cardCount": 45
   },
@@ -32,9 +35,18 @@ class CollectionList extends Component {
 
   onCreate(data) {
     this.setState((prevState, props) => {
-      const newCollection = update(prevState.collections, {$push: [{title: data.newTitle, cardCount: 0}]});
+			// get next id
+			let maxId = 0;
+			prevState.collections.forEach(function(elem) {
+				if(elem.id > maxId) {
+					maxId = elem.id;
+				}
+			});
+			let nextId = maxId + 1;
+			const newCollection = { id: nextId, title: data.newTitle, cardCount: 0 };
+      const newCollections = update(prevState.collections, {$push: [newCollection]});
       return {
-        collections: newCollection
+        collections: newCollections
       };
     })
   }
@@ -45,7 +57,7 @@ class CollectionList extends Component {
       <div className="collection-list">
         <CreateCollection onCreate={this.onCreate} />
         {collections.map(item => (
-            <CollectionListItem title={item.title} cardCount={item.cardCount} />
+            <CollectionListItem key={item.id.toString()} collectionId={item.id} title={item.title} cardCount={item.cardCount} />
         ))}
 			</div>
     );
