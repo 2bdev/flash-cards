@@ -31,6 +31,7 @@ class Collection extends Component {
     return (
       <div className="App">
         <h2>{collection.title}</h2>
+
       </div>
     );
   }

@@ -37,7 +37,17 @@ class CollectionList extends Component {
   onCreate(data) {
     const collectionRef = firebase.database().ref('collections');
     const newCollection = { title: data.newTitle, cardCount: 0 };
-    collectionRef.push(newCollection);
+    let collectionKey = data.newTitle.toLowerCase();
+    collectionKey = collectionKey.replace(/[^a-zA-Z0-9 ]/g, '');
+    collectionKey = collectionKey.replace(/\s+/g, '-');
+
+    collectionRef.child(collectionKey).transaction((existingCollection) => {
+      if(existingCollection === null) {
+        return newCollection;
+      } else {
+        alert("Collection with id of "+collectionKey+" already exists.");
+      }
+    });
 
     // this.setState((prevState, props) => {
 		// 	// get next id
