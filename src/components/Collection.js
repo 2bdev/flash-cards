@@ -13,6 +13,8 @@ class Collection extends Component {
       collection: {},
       cards: []
     };
+
+    this.addedCard = this.addedCard.bind(this);
   }
 
   componentDidMount() {
@@ -42,12 +44,23 @@ class Collection extends Component {
     });
   }
 
+  addedCard() {
+    const collectionId = this.props.match.params.id;
+    const collectionRef = firebase.database().ref('collections/'+collectionId);
+
+    let newCount = this.state.collection.cardCount + 1;
+    console.log("newcount: " + newCount);
+    collectionRef.update({
+      cardCount: newCount
+    });
+  }
+
   render() {
     const { collection, cards } = this.state;
     return (
       <div className="App">
-        <h2>{collection.title}</h2>
-        <CreateCard collectionId={this.props.match.params.id} />
+        <h2>{collection.title} ({collection.cardCount})</h2>
+        <CreateCard collectionId={this.props.match.params.id} addCard={this.addedCard} />
         <h3>Click the card to reveal the answer</h3>
         {cards.map(item => (
             <Card key={item.key} sideA={item.sideA} sideB={item.sideB} />

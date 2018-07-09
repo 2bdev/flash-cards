@@ -28,6 +28,7 @@ class CreateCard extends Component {
     const newCard = { sideA: this.state.sideA, sideB: this.state.sideB };
 
     cardsRef.push().set(newCard);
+    this.props.addCard();
 
     this.setState({
       sideA: '',
