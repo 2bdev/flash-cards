@@ -48,6 +48,7 @@ class Collection extends Component {
       <div className="App">
         <h2>{collection.title}</h2>
         <CreateCard collectionId={this.props.match.params.id} />
+        <h3>Click the card to reveal the answer</h3>
         {cards.map(item => (
             <Card key={item.key} sideA={item.sideA} sideB={item.sideB} />
         ))}

@@ -49,21 +49,6 @@ class CollectionList extends Component {
       }
     });
 
-    // this.setState((prevState, props) => {
-		// 	// get next id
-		// 	let maxId = 0;
-		// 	prevState.collections.forEach(function(elem) {
-		// 		if(elem.id > maxId) {
-		// 			maxId = elem.id;
-		// 		}
-		// 	});
-		// 	let nextId = maxId + 1;
-		// 	const newCollection = { id: nextId, title: data.newTitle, cardCount: 0 };
-    //   const newCollections = update(prevState.collections, {$push: [newCollection]});
-    //   return {
-    //     collections: newCollections
-    //   };
-    // })
   }
 
   render() {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import firebase from '../firebase';
+import '../assets/css/CreateCard.css';
 
 class CreateCard extends Component {
   constructor(props) {
