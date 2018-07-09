@@ -1,46 +1,28 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom'
 import '../assets/css/App.css';
-
-const collections = [
-  {
-		"id": 1,
-    "title": "State Capitals",
-    "cardCount": 50
-  },
-  {
-		"id": 2,
-    "title": "World Capitals",
-    "cardCount": 190
-  },
-  {
-		"id": 3,
-    "title": "US Presidents",
-    "cardCount": 45
-  },
-];
+import firebase from '../firebase';
 
 class Collection extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      collection: {}
+      collection: {},
+      cards: []
     };
   }
 
   componentDidMount() {
     const collectionId = this.props.match.params.id;
 
-    let curCollection = {};
-    collections.forEach(function(elem) {
-      if(elem.id == collectionId) {
-        curCollection = elem;
-      }
-    });
-
-    this.setState({
-      collection: curCollection
+    const itemRef = firebase.database().ref('collections/'+collectionId);
+    itemRef.on('value', (snapshot) => {
+      let item = snapshot.val();
+      console.log(item);
+      this.setState({
+        collection: item
+      });
     });
   }
 

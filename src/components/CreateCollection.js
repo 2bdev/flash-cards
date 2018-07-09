@@ -63,7 +63,7 @@ class CreateCollection extends Component {
               placeholder="New Collection"
               onChange={this.handleChange}
               onKeyPress={this.handleKeyPress}
-              autofocus="true"
+              autoFocus="true"
             />
           </Modal.Body>
           <Modal.Footer>

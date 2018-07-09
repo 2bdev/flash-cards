@@ -3,52 +3,57 @@ import { Modal } from 'react-bootstrap';
 import update from 'immutability-helper';
 import CollectionListItem from './CollectionListItem';
 import CreateCollection from './CreateCollection';
-
-const collections = [
-  {
-		"id": 1,
-    "title": "State Capitals",
-    "cardCount": 50
-  },
-  {
-		"id": 2,
-    "title": "World Capitals",
-    "cardCount": 190
-  },
-  {
-		"id": 3,
-    "title": "US Presidents",
-    "cardCount": 45
-  },
-];
+import firebase from '../firebase';
 
 class CollectionList extends Component {
   constructor(props) {
 		super(props);
 
     this.state = {
-      collections: collections
+      collections: []
     };
 
     this.onCreate = this.onCreate.bind(this);
 	}
 
+  componentDidMount() {
+    const itemsRef = firebase.database().ref('collections');
+    itemsRef.on('value', (snapshot) => {
+      let items = snapshot.val();
+      let newState = [];
+      for (let item in items) {
+        newState.push({
+          id: item,
+          title: items[item].title,
+          cardCount: items[item].cardCount
+        });
+      }
+      this.setState({
+        collections: newState
+      });
+    });
+  }
+
   onCreate(data) {
-    this.setState((prevState, props) => {
-			// get next id
-			let maxId = 0;
-			prevState.collections.forEach(function(elem) {
-				if(elem.id > maxId) {
-					maxId = elem.id;
-				}
-			});
-			let nextId = maxId + 1;
-			const newCollection = { id: nextId, title: data.newTitle, cardCount: 0 };
-      const newCollections = update(prevState.collections, {$push: [newCollection]});
-      return {
-        collections: newCollections
-      };
-    })
+    const collectionRef = firebase.database().ref('collections');
+    const newCollection = { title: data.newTitle, cardCount: 0 };
+    collectionRef.push(newCollection);
+
+    // this.setState((prevState, props) => {
+		// 	// get next id
+		// 	let maxId = 0;
+		// 	prevState.collections.forEach(function(elem) {
+		// 		if(elem.id > maxId) {
+		// 			maxId = elem.id;
+		// 		}
+		// 	});
+		// 	let nextId = maxId + 1;
+		// 	const newCollection = { id: nextId, title: data.newTitle, cardCount: 0 };
+    //   const newCollections = update(prevState.collections, {$push: [newCollection]});
+    //   return {
+    //     collections: newCollections
+    //   };
+    // })
   }
 
   render() {
